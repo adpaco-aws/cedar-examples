@@ -36,7 +36,7 @@ async fn main() {
             "./policies-templates.cedar",
         )
     } else {
-        ("./tinytodo.cedarschema", "./policies.cedar")
+        ("./tinytodo.cedarschema.json", "./policies.cedar")
     };
     let app = match AppContext::spawn("./entities.json", schema_path, policies_path) {
         Ok(app) => app,
