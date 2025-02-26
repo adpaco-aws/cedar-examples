@@ -7,11 +7,16 @@ type Profile = {
 };
 
 // Entities
+//
+// Members of the streaming service can be either `FreeMember` or `Subscriber`.
+// `Subscriber` is a paid membership with two tiers: `standard` and `premium`.
 entity FreeMember;
 entity Subscriber = {
   subscription: Subscription,
   profile: Profile
 };
+
+// Content in the streaming service can be either `Movie` or `Show`.
 entity Movie = {
   isFree: Bool,
   needsRentOrBuy: Bool,

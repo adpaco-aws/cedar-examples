@@ -25,50 +25,34 @@ permit (
 )
 when { resource.isFree == true };
 
-// Promo: Rent/Buy Oscar-Nominated Movies Until the Oscars
-@id("rent-buy-oscar-movie")
-permit (
-  principal is Subscriber,
-  action in [Action::"rent", Action::"buy"],
-  resource is Movie
-)
-when
-{
-  resource.isOscarNominated &&
-  context.now.timestamp >= datetime("2025-02-02T19:00:00-0500") &&
-  context.now.timestamp < datetime(
-      "2025-03-02T19:00:00-0500"
-    ) // Oscars Night
-};
-
 // Early Access (24h) to Shows for Premium Subscribers
-@id("early-access-show")
-permit (
-  principal is Subscriber,
-  action == Action::"watch",
-  resource is Show
-)
-when
-{
-  resource.isEarlyAccess &&
-  principal.subscription.tier == "premium" &&
-  context.now.timestamp >= resource.releaseDate.offset(duration("-24h")) &&
-  context.now.timestamp < resource.releaseDate
-};
+// @id("early-access-show")
+// permit (
+//   principal is Subscriber,
+//   action == Action::"watch",
+//   resource is Show
+// )
+// when
+// {
+//   resource.isEarlyAccess &&
+//   principal.subscription.tier == "premium" &&
+//   context.now.timestamp >= resource.releaseDate.offset(duration("-24h")) &&
+//   context.now.timestamp < resource.releaseDate
+// };
 
 // Forbid Bedtime Access to Kid Profile
-@id("forbid-bedtime-watch-kid-profile")
-forbid (
-  principal is Subscriber,
-  action == Action::"watch",
-  resource
-)
-when
-{
-  // `toTime()` returns the duration modulo one day (i.e., it ignores the "date"
-  // component). Here, we use it to calculate the current time and compare the
-  // result against durations that represent 6:00AM and 9:00PM.
-  principal.profile.isKid &&
-  (context.now.timestamp.toTime() >= duration("21h") ||
-   context.now.timestamp.toTime() < duration("6h"))
-};
+// @id("forbid-bedtime-watch-kid-profile")
+// forbid (
+//   principal is Subscriber,
+//   action == Action::"watch",
+//   resource
+// )
+// when
+// {
+//   // `toTime()` returns the duration modulo one day (i.e., it ignores the "date"
+//   // component). Here, we use it to calculate the current time and compare the
+//   // result against durations that represent 6:00AM and 9:00PM.
+//   principal.profile.isKid &&
+//   (context.now.timestamp.toTime() >= duration("21h") ||
+//    context.now.timestamp.toTime() < duration("6h"))
+// };
